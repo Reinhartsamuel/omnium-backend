@@ -90,7 +90,7 @@ router.post('/order', async (req, res) => {
 
         // Generate QR code as data URL
         const qrCodeDataUrl = await QRCode.toDataURL(dataString);
-
+        console.log(qrCodeDataUrl);
         // res.json({
         //     created: data,
         //     qrData: {
@@ -105,40 +105,74 @@ router.post('/order', async (req, res) => {
 
         // Send HTML response
         return res.send(`
-            <!DOCTYPE html>
+             <!DOCTYPE html >
             <html>
-            <head>
-                <title>Order QR Code</title>
-                <style>
-                    body {
-                        display: flex;
+                <head>
+                    <title>Order QR Code</title>
+                    <style>
+                        body {
+                            display: flex;
                         justify-content: center;
                         align-items: center;
                         min-height: 100vh;
                         margin: 0;
                         background-color: #f5f5f5;
                         font-family: Arial, sans-serif;
-                    }
-                    .container {
-                        text-align: center;
-                        padding: 20px;
+                }
+                        .container {
+                            text - align: center;
+                        padding: 10px;
                         background-color: white;
                         border-radius: 8px;
                         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-                    }
-                    img {
-                        max-width: 300px;
-                        margin: 20px 0;
-                    }
-                </style>
-            </head>
-            <body>
-                <div class="container">
-                    <h1>Order QR Code</h1>
-                    <img src="${qrCodeDataUrl}" alt="QR Code">
-                    <p>Scan this QR code to view order details</p>
-                </div>
-            </body>
+                        display:flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                }
+                        .topbar {
+                            display: flex;
+                        justify-content: center;
+                        width: 100%;
+                }
+                        .bottombar {
+                            display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        width: 80%;
+                }
+                        img {
+                            /*max-width: 500px;*/
+                        
+                }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <div class="topbar">
+                            <img
+                                src='https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/omniumlogohorizontal-removebg-preview.png?alt=media&token=1b181d1f-2de4-45bd-8bcb-dbd9e2d68ad8'
+                                alt="Omnium Logo"
+                                width="200"
+                            />
+
+                        </div>
+                        <img class="width:100rem;" src="${qrCodeDataUrl}" alt="QR Code">
+                            <div class="bottombar">
+                                <img
+                                    src='https://home.idrx.co/_next/image?url=%2Fassets%2Fidrx-logo-horizontal.png&w=1200&q=75'
+                                    alt="IDRX Logo"
+                                    width="80"
+                                />
+                                <img
+                                    src='http://bitcoinwiki.org/wp-content/uploads/2023/12/430px-Lisk-logo.png'
+                                    alt="Lisk Logo"
+                                    width="80"
+                                />
+                            </div>
+                            <p>Scan this QR code with Omnium app to view order details</p>
+                    </div>
+                </body>
             </html>
         `)
     } catch (error) {
@@ -165,40 +199,74 @@ router.post('/order-qr', async (req, res) => {
 
         // Send HTML response
         res.send(`
-            <!DOCTYPE html>
+            <!DOCTYPE html >
             <html>
-            <head>
-                <title>Order QR Code</title>
-                <style>
-                    body {
-                        display: flex;
+                <head>
+                    <title>Order QR Code</title>
+                    <style>
+                        body {
+                            display: flex;
                         justify-content: center;
                         align-items: center;
                         min-height: 100vh;
                         margin: 0;
                         background-color: #f5f5f5;
                         font-family: Arial, sans-serif;
-                    }
-                    .container {
-                        text-align: center;
-                        padding: 20px;
+                }
+                        .container {
+                            text - align: center;
+                        padding: 10px;
                         background-color: white;
                         border-radius: 8px;
                         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-                    }
-                    img {
-                        max-width: 300px;
-                        margin: 20px 0;
-                    }
-                </style>
-            </head>
-            <body>
-                <div class="container">
-                    <h1>Order QR Code</h1>
-                    <img src="${qrCodeDataUrl}" alt="QR Code">
-                    <p>Scan this QR code to view order details</p>
-                </div>
-            </body>
+                        display:flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                }
+                        .topbar {
+                            display: flex;
+                        justify-content: center;
+                        width: 100%;
+                }
+                        .bottombar {
+                            display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        width: 80%;
+                }
+                        img {
+                            /*max-width: 500px;*/
+                        
+                }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <div class="topbar">
+                            <img
+                                src='https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/omniumlogohorizontal-removebg-preview.png?alt=media&token=1b181d1f-2de4-45bd-8bcb-dbd9e2d68ad8'
+                                alt="Omnium Logo"
+                                width="200"
+                            />
+
+                        </div>
+                        <img class="width:100rem;" src="${qrCodeDataUrl}" alt="QR Code">
+                            <div class="bottombar">
+                                <img
+                                    src='https://home.idrx.co/_next/image?url=%2Fassets%2Fidrx-logo-horizontal.png&w=1200&q=75'
+                                    alt="IDRX Logo"
+                                    width="80"
+                                />
+                                <img
+                                    src='http://bitcoinwiki.org/wp-content/uploads/2023/12/430px-Lisk-logo.png'
+                                    alt="Lisk Logo"
+                                    width="80"
+                                />
+                            </div>
+                            <p>Scan this QR code with Omnium app to view order details</p>
+                    </div>
+                </body>
             </html>
         `);
     } catch (error) {
