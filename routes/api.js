@@ -1,6 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const supabase = require('../configs/client');
+const QRCode = require('qrcode');
+
+require('dotenv').config({
+    path: '.env.local'
+});
 
 // Example route
 router.get('/', (req, res) => {
@@ -13,11 +18,11 @@ router.patch('/order', async (req, res) => {
     console.log(body, 'backend called');
     try {
         const { orderId, txHash } = body;
-        const { data, error:errorFetch } = await supabase
+        const { data, error: errorFetch } = await supabase
             .from('orders')
             .select()
             .eq('id', Number(orderId));
-            
+
         const { error } = await supabase
             .from('orders')
             .update({
@@ -31,7 +36,7 @@ router.patch('/order', async (req, res) => {
 
 
         console.log(`calling callbackUrl: ${data?.[0]?.callbackUrl}`);
-        console.log(`typeof data: ${typeof(data)}`);
+        console.log(`typeof data: ${typeof (data)}`);
 
         res.status(200).json({ message: 'Order updated' });
     } catch (error) {
@@ -71,10 +76,134 @@ router.post('/order', async (req, res) => {
         if (error) {
             throw error;
         }
-        res.json({ created: data });
+
+
+        const qrData = {
+            sellerAddress: seller,
+            amount: data?.[0]?.price,
+            productName: product,
+            orderId: data?.[0]?.id,
+            quantity: data?.[0]?.quantity,
+        }
+        // Convert the data to a string
+        const dataString = JSON.stringify(qrData);
+
+        // Generate QR code as data URL
+        const qrCodeDataUrl = await QRCode.toDataURL(dataString);
+
+        // res.json({
+        //     created: data,
+        //     qrData: {
+        //         sellerAddress: seller,
+        //         amount: data?.[0]?.price,
+        //         productName: product,
+        //         orderId: data?.[0]?.id,
+        //         quantity: data?.[0]?.quantity,
+        //         contractAddress : process.env.CONTRACT_ADDRESS,
+        //     }
+        // });
+
+        // Send HTML response
+        return res.send(`
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Order QR Code</title>
+                <style>
+                    body {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        min-height: 100vh;
+                        margin: 0;
+                        background-color: #f5f5f5;
+                        font-family: Arial, sans-serif;
+                    }
+                    .container {
+                        text-align: center;
+                        padding: 20px;
+                        background-color: white;
+                        border-radius: 8px;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                    }
+                    img {
+                        max-width: 300px;
+                        margin: 20px 0;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <h1>Order QR Code</h1>
+                    <img src="${qrCodeDataUrl}" alt="QR Code">
+                    <p>Scan this QR code to view order details</p>
+                </div>
+            </body>
+            </html>
+        `)
     } catch (error) {
         console.error('Error inserting data:', error);
         res.status(500).json({ error: 'Internal Server Error', message: error.message, details: error.details });
+    }
+});
+router.post('/order-qr', async (req, res) => {
+    try {
+        // Dummy JSON data - you can replace this with real data from req.body
+        const dummyData = {
+            orderId: "12345",
+            timestamp: new Date().toISOString(),
+            amount: 100.00,
+            currency: "USD",
+            merchantId: "MERCH001"
+        };
+
+        // Convert the data to a string
+        const dataString = JSON.stringify(dummyData);
+
+        // Generate QR code as data URL
+        const qrCodeDataUrl = await QRCode.toDataURL(dataString);
+
+        // Send HTML response
+        res.send(`
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Order QR Code</title>
+                <style>
+                    body {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        min-height: 100vh;
+                        margin: 0;
+                        background-color: #f5f5f5;
+                        font-family: Arial, sans-serif;
+                    }
+                    .container {
+                        text-align: center;
+                        padding: 20px;
+                        background-color: white;
+                        border-radius: 8px;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                    }
+                    img {
+                        max-width: 300px;
+                        margin: 20px 0;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <h1>Order QR Code</h1>
+                    <img src="${qrCodeDataUrl}" alt="QR Code">
+                    <p>Scan this QR code to view order details</p>
+                </div>
+            </body>
+            </html>
+        `);
+    } catch (error) {
+        console.error('Error generating QR code:', error);
+        res.status(500).send('Error generating QR code');
     }
 });
 
