@@ -275,4 +275,25 @@ router.post('/order-qr', async (req, res) => {
     }
 });
 
+
+// function async kuda() {
+//     const res = await fetch('https://omnium-backend-production.up.railway.app', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify({
+//             "data": {
+//                 "product": "Hermes Bag",
+//                 "quantity": "2",
+//                 "price": 500000,
+//                 "seller": "0x902Cfa8719C5FE348fcd44b670B7EA07b1230891", // Your merchant's address
+//                 "callbackUrl": "https://backend.com/" // Your merchant's backend service
+//             }
+//         })
+//     });
+//     const data = await res.json();
+//     setQrCode(data);
+// }
+
 module.exports = router;

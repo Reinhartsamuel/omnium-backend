@@ -7,7 +7,9 @@ app.use(cors());
 
 // Middleware for parsing JSON bodies
 app.use(express.json());
-
+app.get('/', (req, res) => {
+  res.send('Hello, from Omnium!');
+});
 // Import routes
 const apiRouter = require('./routes/api');
 
