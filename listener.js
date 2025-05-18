@@ -2,7 +2,7 @@ require('dotenv').config({
     path: '.env.local'
 });
 const { ethers } = require("ethers");
-const PAYMENT_GATEWAY_ABI = require('./abis/PaymentGateway');
+const PAYMENT_GATEWAY_ABI = require('./abis/paymentGateway.json');
 
 // Contract setup
 const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
@@ -44,7 +44,7 @@ contract.on("PaymentReceived", async (buyer, seller, token, amount, data, event)
 
         try {
             console.log('calling backend started');
-            const res = await fetch('http://localhost:3000/api/order', {
+            const res = await fetch('https://omnium-backend-production.up.railway.app/api/order', {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
