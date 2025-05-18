@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
-    "start-listener" : "node listener.js"
+    "start-listener": "node listener.js"
   },
   "keywords": [],
   "author": "",
@@ -20,7 +20,9 @@
     "dotenv": "^16.5.0",
     "ethers": "^6.14.0",
     "express": "^5.1.0",
-    "qrcode": "^1.5.4"
+    "qrcode": "^1.5.4",
+    "supabase": "^2.22.12",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.26.0",
